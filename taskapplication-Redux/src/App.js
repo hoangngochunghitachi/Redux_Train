@@ -10,7 +10,6 @@ export default class TaskSearchControl extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      tasks: [],
       isDisplayForm: false,
       taskEditing: null,
       filter: {
@@ -20,15 +19,6 @@ export default class TaskSearchControl extends Component {
       keyword: '',
       sortBy: 'name',
       sortValue: 1
-    }
-  }
-
-  componentWillMount() {
-    if (localStorage && localStorage.getItem('tasks')) {
-      const tasks = JSON.parse(localStorage.getItem('tasks'));
-      this.setState({
-        tasks: tasks
-      });
     }
   }
 
@@ -150,41 +140,41 @@ export default class TaskSearchControl extends Component {
   }
 
   render() {
-    var { tasks, isDisplayForm, taskEditing, filter, keyword, sortBy, sortValue } = this.state;
+    var { isDisplayForm, taskEditing, filter, keyword, sortBy, sortValue } = this.state;
     // console.log(filter);
-    if (filter) {
-      if (filter.name) {
-        tasks = tasks.filter((task) => {
-          return task.name.toLowerCase().indexOf(filter.name) !== -1
-        });
-      }
-      tasks = tasks.filter((task) => {
-        if (filter.status === -1) {
-          return tasks;
-        } else {
-          return task.status === (filter.status === 1 ? true : false);
-        }
-      });
-    }
-    if (keyword) {
-      tasks = tasks.filter((task) => {
-        return task.name.toLowerCase().indexOf(keyword) !== -1
-      });
-    }
-    if (sortBy === 'name') {
-      // sort name
-      tasks.sort((a, b) => {
-        if (a.name > b.name) return sortValue;
-        else if (a.name < b.name) return -sortValue;
-        else return 0;
-      })
-    } else {
-      tasks.sort((a, b) => {
-        if (a.status > b.status) return -sortValue;
-        else if (a.status < b.status) return sortValue;
-        else return 0;
-      })
-    }
+    // if (filter) {
+    //   if (filter.name) {
+    //     tasks = tasks.filter((task) => {
+    //       return task.name.toLowerCase().indexOf(filter.name) !== -1
+    //     });
+    //   }
+    //   tasks = tasks.filter((task) => {
+    //     if (filter.status === -1) {
+    //       return tasks;
+    //     } else {
+    //       return task.status === (filter.status === 1 ? true : false);
+    //     }
+    //   });
+    // }
+    // if (keyword) {
+    //   tasks = tasks.filter((task) => {
+    //     return task.name.toLowerCase().indexOf(keyword) !== -1
+    //   });
+    // }
+    // if (sortBy === 'name') {
+    //   // sort name
+    //   tasks.sort((a, b) => {
+    //     if (a.name > b.name) return sortValue;
+    //     else if (a.name < b.name) return -sortValue;
+    //     else return 0;
+    //   })
+    // } else {
+    //   tasks.sort((a, b) => {
+    //     if (a.status > b.status) return -sortValue;
+    //     else if (a.status < b.status) return sortValue;
+    //     else return 0;
+    //   })
+    // }
     const elmTaskForm = isDisplayForm ? <TaskForm onSubmit={this.onSubmit} onCloseForm={this.onCloseForm} task={taskEditing} /> : '';
     return (
       <div className="container">
