@@ -205,7 +205,7 @@ export default class TaskSearchControl extends Component {
             {/* Task Control  */}
             <TaskControl onSearch={this.onSearch} onSort={this.onSort} sortBy={sortBy} sortValue={sortValue} />
             {/* Task List  */}
-            <TaskList tasks={tasks} onUpdateStatus={this.onUpdateStatus} onDelete={this.onDelete} onUpdate={this.onUpdate} onFilter={this.onFilter} />
+            <TaskList onUpdateStatus={this.onUpdateStatus} onDelete={this.onDelete} onUpdate={this.onUpdate} onFilter={this.onFilter} />
           </div>
         </div>
       </div >

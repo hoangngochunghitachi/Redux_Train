@@ -7,18 +7,19 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { Provider } from "react-redux";
 import { createStore } from "redux";
+import reducers from "./reducers/index";
 
 //call reducers
-// import reducers from "./reducers/index";
+
 //create store
-// const store = createStore(reducers);
+const store = createStore(reducers);
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      {/* <Provider store={store}> */}
-      <App />
-      {/* </Provider> */}
+      <Provider store={store}>
+        <App />
+      </Provider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
