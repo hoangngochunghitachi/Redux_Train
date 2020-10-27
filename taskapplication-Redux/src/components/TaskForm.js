@@ -6,12 +6,15 @@ class TaskForm extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {}
-
+        this.state = {
+            id: '',
+            name: '',
+            status: false
+        };
     }
 
     componentWillMount() {
-        if (this.props.taskEditting) {
+        if (this.props.taskEditting && this.props.taskEditting.id !== null) {
             this.setState({
                 id: this.props.taskEditting.id,
                 name: this.props.taskEditting.name,
@@ -43,7 +46,6 @@ class TaskForm extends Component {
     }
 
     onHandleChange = (event) => {
-        console.log('zooooo');
         var target = event.target;
         var name = target.name;
         var value = target.value;
@@ -54,7 +56,6 @@ class TaskForm extends Component {
         this.setState({
             [name]: value
         });
-        console.log(this.state);
     }
 
     onSave = (event) => {
@@ -72,13 +73,12 @@ class TaskForm extends Component {
     }
 
     render() {
-        let id = this.props.taskEditting.id;
         if (!this.props.isDisplayForm) return null;
         return (
             <div className="panel panel-warning">
                 <div className="panel-heading">
                     <h3 className="panel-title">
-                        {id === '' ? 'Add Job' : 'Update Job'}
+                        {!this.state.id ? 'Add Job' : 'Update Job'}
                     </h3>
                     <span
                         className="fa fa-times-circle text-right"

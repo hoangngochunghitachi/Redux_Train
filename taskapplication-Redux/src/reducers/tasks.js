@@ -30,7 +30,7 @@ const appReducer = (state = initalState, action) => {
             let newTask = {
                 id: action.task.id,
                 name: action.task.name,
-                status: action.task.status === 'true' ? true : false
+                status: (action.task.status === 'true' || action.task.status === true) ? true : false
             };
             if (!newTask.id) {
                 newTask.id = generateID();
