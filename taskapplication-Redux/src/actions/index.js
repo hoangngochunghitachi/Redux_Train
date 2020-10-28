@@ -51,3 +51,17 @@ export const editTask = (task) => {
         task
     }
 }
+
+export const filterTask = (filter) => {
+    return {
+        type: types.FILTER_TABLE,
+        filter
+    }
+}
+
+export const searchTask = (keyword) => {
+    return {
+        type: types.SEARCH,
+        keyword
+    }
+}

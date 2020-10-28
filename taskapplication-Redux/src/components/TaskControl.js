@@ -9,7 +9,7 @@ export default class TaskControl extends Component {
         return (
             <div className="row mt-15">
                 {/* Task Search */}
-                <TaskSearchControl onSearch={this.props.onSearch} />
+                <TaskSearchControl />
                 {/* Task Sort */}
                 <TaskSortControl onSort={this.props.onSort} sortBy={this.props.sortBy} sortValue={this.props.sortValue} />
             </div>

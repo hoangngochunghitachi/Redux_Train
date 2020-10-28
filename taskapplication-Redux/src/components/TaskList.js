@@ -1,7 +1,8 @@
 
 import React, { Component } from "react";
 import TaskItem from "./TaskItem";
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import * as actions from './../actions/index'
 
 class TaskList extends Component {
 
@@ -16,20 +17,40 @@ class TaskList extends Component {
     onHandleChange = (event) => {
         const target = event.target;
         const name = target.name;
-        const value = target.value;
-        this.props.onFilter(
-            name === 'filterName' ? value : this.state.filterName,
-            name === 'filterStatus' ? value : this.state.filterStatus,
-        );
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+
+        let filter = {
+            name: name === 'filterName' ? value : this.state.filterName,
+            status: name === 'filterStatus' ? value : this.state.filterStatus
+        };
+        this.props.onFilterTable(filter);
         this.setState({
             [name]: value
         });
     }
 
     render() {
-        const tasks = this.props.tasks;
-        const { filterName, filterStatus } = this.state;
-        const elmTasks = tasks.map((task, index) => {
+        let { tasks, filterTable, keyword } = this.props;
+        if (filterTable.name) {
+            tasks = tasks.filter((task) => {
+                return task.name.toLowerCase().indexOf(filterTable.name) !== -1
+            });
+        }
+        tasks = tasks.filter((task) => {
+            if (filterTable.status === -1) {
+                return task;
+            } else {
+                return task.status
+                    === (filterTable.status === 1 ? true : false);
+            }
+        });
+
+        // search
+        tasks = tasks.filter((task) => {
+            return task.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
+        });
+
+        let elmTasks = tasks.map((task, index) => {
             return <TaskItem key={task.id} index={index} task={task} />
         });
         return (
@@ -48,10 +69,10 @@ class TaskList extends Component {
                             <tr>
                                 <td></td>
                                 <td>
-                                    <input type="text" className="form-control" name="filterName" value={filterName} onChange={this.onHandleChange} />
+                                    <input type="text" className="form-control" name="filterName" value={this.state.filterName} onChange={this.onHandleChange} />
                                 </td>
                                 <td>
-                                    <select className="form-control" name="filterStatus" value={filterStatus} onChange={this.onHandleChange}>
+                                    <select className="form-control" name="filterStatus" value={this.state.filterStatus} onChange={this.onHandleChange}>
                                         <option value="-1">All</option>
                                         <option value="0">Hide</option>
                                         <option value="1">Active</option>
@@ -71,7 +92,18 @@ class TaskList extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        tasks: state.tasks
+        tasks: state.tasks,
+        filterTable: state.filterTable,
+        keyword: state.search,
     }
 };
-export default connect(mapStateToProps, null)(TaskList); // connect(mapStateToProps, mapDispatchToProps)(TaskList)
+
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+        onFilterTable: (filter) => {
+            dispatch(actions.filterTask(filter));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskList); // connect(mapStateToProps, mapDispatchToProps)(TaskList)

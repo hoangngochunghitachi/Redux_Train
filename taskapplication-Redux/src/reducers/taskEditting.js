@@ -1,6 +1,10 @@
 import * as types from '../constants/ActionTypes'
 
-let initalState = {};
+let initalState = {
+    id: '',
+    name: '',
+    status: false
+};
 
 const appReducer = (state = initalState, action) => {
     switch (action.type) {

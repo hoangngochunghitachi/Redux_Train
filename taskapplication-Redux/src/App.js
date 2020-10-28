@@ -11,11 +11,6 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      taskEditing: null,
-      filter: {
-        name: '',
-        status: -1
-      },
       keyword: '',
       sortBy: 'name',
       sortValue: 1
@@ -23,25 +18,17 @@ class App extends Component {
   }
 
   onToggleForm = () => {
-    this.props.onToggleForm();
-    // if (this.state.isDisplayForm && this.state.taskEditing !== null) {
-    //   this.setState({
-    //     isDisplayForm: true,
-    //     taskEditing: null
-    //   });
-    // } else {
-    //   this.setState({
-    //     isDisplayForm: !this.state.isDisplayForm,
-    //     taskEditing: null
-    //   });
-    // }
-  }
-
-  s4() {
-    return Math.floor((1 + Math.random()) * 0X10000).toString(16).substring(1);
-  }
-  generateID() {
-    return this.s4() + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4() + '-' + this.s4();
+    let { taskEditting } = this.props;
+    if (taskEditting && taskEditting.id !== '') {
+      this.props.onOpenForm();
+    } else {
+      this.props.onToggleForm();
+    }
+    this.props.onClearTask({
+      id: '',
+      name: '',
+      status: false
+    });
   }
 
   findIndex = (id) => {
@@ -59,25 +46,6 @@ class App extends Component {
     this.props.onShowForm();
   }
 
-  // onUpdate = (id) => {
-  //   const { tasks } = this.state;
-  //   let index = this.findIndex(id);
-  //   const taskEditing = tasks[index];
-  //   this.setState({
-  //     taskEditing: taskEditing
-  //   });
-  //   this.onShowForm();
-  // }
-
-  onFilter = (filterName, filterStatus) => {
-    filterStatus = parseInt(filterStatus, 10);
-    this.setState({
-      filter: {
-        name: filterName.toLowerCase(),
-        status: filterStatus
-      }
-    });
-  }
   onSearch = (keyword) => {
     this.setState({
       keyword: keyword.toLowerCase()
@@ -93,7 +61,7 @@ class App extends Component {
   }
 
   render() {
-    let { taskEditing, filter, keyword, sortBy, sortValue } = this.state;
+    let { keyword, sortBy, sortValue } = this.state;
     let isDisplayForm = this.props.isDisplayForm;
     // console.log(filter);
     // if (filter) {
@@ -159,18 +127,25 @@ class App extends Component {
 }
 const mapStateToProps = state => {
   return {
-    isDisplayForm: state.isDisplayForm
+    isDisplayForm: state.isDisplayForm,
+    taskEditting: state.taskEditting
   };
 };
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
     onToggleForm: () => {
-      dispatch(actions.toggleForm())
+      dispatch(actions.toggleForm());
     },
     onShowForm: () => {
+      dispatch(actions.openForm());
+    },
+    onClearTask: (task) => {
+      dispatch(actions.editTask(task));
+    },
+    onOpenForm: () => {
       dispatch(actions.openForm())
-    }
+    },
   };
 };
 
