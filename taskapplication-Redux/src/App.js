@@ -10,11 +10,6 @@ class App extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      keyword: '',
-      sortBy: 'name',
-      sortValue: 1
-    }
   }
 
   onToggleForm = () => {
@@ -46,58 +41,8 @@ class App extends Component {
     this.props.onShowForm();
   }
 
-  onSearch = (keyword) => {
-    this.setState({
-      keyword: keyword.toLowerCase()
-    })
-  }
-
-  onSort = (sortBy, sortValue) => {
-    this.setState({
-      sortBy: sortBy,
-      sortValue: sortValue
-    });
-    // console.log(this.state.sortBy, this.state.sortValue);
-  }
-
   render() {
-    let { keyword, sortBy, sortValue } = this.state;
     let isDisplayForm = this.props.isDisplayForm;
-    // console.log(filter);
-    // if (filter) {
-    //   if (filter.name) {
-    //     tasks = tasks.filter((task) => {
-    //       return task.name.toLowerCase().indexOf(filter.name) !== -1
-    //     });
-    //   }
-    //   tasks = tasks.filter((task) => {
-    //     if (filter.status === -1) {
-    //       return tasks;
-    //     } else {
-    //       return task.status === (filter.status === 1 ? true : false);
-    //     }
-    //   });
-    // }
-    // if (keyword) {
-    //   tasks = tasks.filter((task) => {
-    //     return task.name.toLowerCase().indexOf(keyword) !== -1
-    //   });
-    // }
-    // if (sortBy === 'name') {
-    //   // sort name
-    //   tasks.sort((a, b) => {
-    //     if (a.name > b.name) return sortValue;
-    //     else if (a.name < b.name) return -sortValue;
-    //     else return 0;
-    //   })
-    // } else {
-    //   tasks.sort((a, b) => {
-    //     if (a.status > b.status) return -sortValue;
-    //     else if (a.status < b.status) return sortValue;
-    //     else return 0;
-    //   })
-    // }
-    // const elmTaskForm = isDisplayForm ? <TaskForm task={taskEditing} /> : '';
     return (
       <div className="container">
         <div className="text-center">
@@ -107,8 +52,6 @@ class App extends Component {
         <div className="row">
           <div className={isDisplayForm ? 'col-xs-4 col-sm-4 col-md-4 col-lg-4' : ''}>
             {/* Task Form */}
-            {/* <TaskForm /> */}
-            {/* {elmTaskForm} */}
             <TaskForm />
           </div>
           <div className={isDisplayForm ? 'col-xs-8 col-sm-8 col-md-8 col-lg-8' : 'col-xs-12 col-sm-12 col-md-12 col-lg-12'}>
@@ -116,9 +59,9 @@ class App extends Component {
               <span className="fa fa-plus mr-5"></span>Add New Job
                   </button>
             {/* Task Control  */}
-            <TaskControl onSearch={this.onSearch} onSort={this.onSort} sortBy={sortBy} sortValue={sortValue} />
+            <TaskControl />
             {/* Task List  */}
-            <TaskList onFilter={this.onFilter} />
+            <TaskList />
           </div>
         </div>
       </div >

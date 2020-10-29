@@ -1,10 +1,14 @@
-
 import React, { Component } from "react";
+import { connect } from 'react-redux';
+import * as actions from './../actions/index';
 
-export default class TaskSortControl extends Component {
+class TaskSortControl extends Component {
 
     onClick = (sortBy, sortValue) => {
-        this.props.onSort(sortBy, sortValue);
+        this.props.onSort({
+            by: sortBy,
+            value: sortValue
+        });
     }
 
     render() {
@@ -16,25 +20,41 @@ export default class TaskSortControl extends Component {
                     </button>
                     <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
                         <li onClick={() => this.onClick('name', 1)}>
-                            <a role="button" className={(this.props.sortBy === 'name' && this.props.sortValue === 1) ? 'sort_selected' : ''}>
+                            <a role="button" className={(this.props.sort.by === 'name' && this.props.sort.value === 1) ? 'sort_selected' : ''}>
                                 <span className="fa fa-sort-alpha-asc pr-5">
                                     Name A-Z
                                 </span>
                             </a>
                         </li>
                         <li onClick={() => this.onClick('name', -1)}>
-                            <a role="button" className={(this.props.sortBy === 'name' && this.props.sortValue === -1) ? 'sort_selected' : ''}>
+                            <a role="button" className={(this.props.sort.by === 'name' && this.props.sort.value === -1) ? 'sort_selected' : ''}>
                                 <span className="fa fa-sort-alpha-desc pr-5">
                                     Name Z-A
                                                 </span>
                             </a>
                         </li>
                         <li role="separator" className="divider"></li>
-                        <li onClick={() => this.onClick('status', 1)}><a role="button" className={(this.props.sortBy === 'status' && this.props.sortValue === 1) ? 'sort_selected' : ''}>Status active</a></li>
-                        <li onClick={() => this.onClick('status', -1)}><a role="button" className={(this.props.sortBy === 'status' && this.props.sortValue === -1) ? 'sort_selected' : ''}>Status hide</a></li>
+                        <li onClick={() => this.onClick('status', 1)}><a role="button" className={(this.props.sort.by === 'status' && this.props.sort.value === 1) ? 'sort_selected' : ''}>Status active</a></li>
+                        <li onClick={() => this.onClick('status', -1)}><a role="button" className={(this.props.sort.by === 'status' && this.props.sort.value === -1) ? 'sort_selected' : ''}>Status hide</a></li>
                     </ul>
                 </div>
             </div>
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        sort: state.sort
+    };
+};
+
+const mapDispatchToProps = (dispatch, props) => {
+    return {
+        onSort: (sort) => {
+            dispatch(actions.sortTask(sort));
+        }
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskSortControl);
